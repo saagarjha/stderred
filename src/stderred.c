@@ -56,7 +56,7 @@ static bool is_valid_sgr_code(const char *code) {
   return true;
 }
 
-__attribute__((constructor, visibility ("hidden"))) void init() {
+__attribute__((constructor, visibility ("hidden"))) void init_stderred() {
   if (!strcmp("bash", PROGRAM_NAME)) return;
   /* "tmux" spawns subshells with argv[0] prefixed with a '-', e.g. "-bash" */
   if (PROGRAM_NAME && PROGRAM_NAME[0] == '-' && PROGRAM_NAME[1] != '\0') return;

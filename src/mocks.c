@@ -2,7 +2,7 @@
 #include "mocks.h"
 
 // Signature of library initialization function
-void init();
+void init_stderred();
 
 extern char *start_color_code;
 extern size_t start_color_code_size;
@@ -14,7 +14,7 @@ extern bool is_valid_env;
 bool mock_tty = true;
 
 static void init_with_mock_colors() {
-  init();
+  init_stderred();
 
   if (!is_valid_env) return;
 
@@ -39,7 +39,7 @@ int isatty(int fildes) {
 
 void init_mocks(struct stderred *stderred) {
   stderred->init = &init_with_mock_colors;
-  stderred->raw_init = &init;
+  stderred->raw_init = &init_stderred;
   stderred->reset = &reset_stderred;
   stderred->has_valid_env = &is_valid_env;
   stderred->mock_tty = &mock_tty;
