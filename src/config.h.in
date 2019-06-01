@@ -28,6 +28,7 @@
 #cmakedefine HAVE_ERR_SET_FILE
 #cmakedefine HAVE__FPRINTF_CHK
 
+#cmakedefine HAVE_PROGRAM_INVOCATION_SHORT_NAME
 #cmakedefine HAVE_GETPROGNAME
 
 #ifdef HAVE_ERROR_H
@@ -38,7 +39,7 @@
   #include <err.h>
 #endif
 
-#ifdef HAVE_GLIBC
+#ifdef HAVE_PROGRAM_INVOCATION_SHORT_NAME
   extern char *program_invocation_short_name;
   #define PROGRAM_NAME program_invocation_short_name
 #elif defined HAVE_GETPROGNAME

@@ -3,22 +3,10 @@ project(stderred)
 
 add_definitions(-std=c99)
 
-include(CheckCSourceCompiles)
-check_c_source_compiles("
-  #include <features.h>
-  #ifndef __GLIBC__
-  #error no gnu here
-  #endif
-  int main() {}
-" HAVE_GLIBC
-)
-
-if (HAVE_GLIBC)
-  # Make the actual program compilation use _GNU_SOURCE
-  add_definitions(-D_GNU_SOURCE)
-  # Make dependency checking have _GNU_SOURCE defined
-  set(CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS} -D_GNU_SOURCE")
-endif (HAVE_GLIBC)
+# Make the actual program compilation use _GNU_SOURCE
+add_definitions(-D_GNU_SOURCE)
+# Make dependency checking have _GNU_SOURCE defined
+set(CMAKE_REQUIRED_FLAGS "${CMAKE_REQUIRED_FLAGS} -D_GNU_SOURCE")
 
 include(CheckIncludeFiles)
 check_include_files(error.h HAVE_ERROR_H)
@@ -50,9 +38,10 @@ check_function_exists(vwarnx HAVE_VWARNX)
 check_function_exists(err_set_file HAVE_ERR_SET_FILE)
 check_function_exists(__fprintf_chk HAVE__FPRINTF_CHK)
 
-if (NOT HAVE_GLIBC)
-  check_function_exists(getprogname HAVE_GETPROGNAME)
-endif (NOT HAVE_GLIBC)
+include(CheckSymbolExists)
+
+check_symbol_exists(program_invocation_short_name errno.h HAVE_PROGRAM_INVOCATION_SHORT_NAME)
+check_function_exists(getprogname HAVE_GETPROGNAME)
 
 configure_file(
   "${PROJECT_SOURCE_DIR}/config.h.in"
