@@ -36,7 +36,7 @@ size_t end_color_code_size;
 #define COLORIZE(fd) (is_valid_env && fd == STDERR_FILENO)
 bool is_valid_env = false;
 
-__attribute__((constructor)) void init_stderred() {
+__attribute__((constructor, visibility ("hidden"))) void init_stderred() {
   if (!strcmp("bash", PROGRAM_NAME)) return;
   /* "tmux" spawns subshells with argv[0] prefixed with a '-', e.g. "-bash" */
   if (PROGRAM_NAME && PROGRAM_NAME[0] == '-' && PROGRAM_NAME[1] != '\0') return;
